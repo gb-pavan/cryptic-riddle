@@ -4,8 +4,16 @@ import { useState } from 'react';
 import { generateEncryptedMessage } from '@/actions/encrypt';
 import { generateDecryptedMessage } from '@/actions/decrypt';
 
+type EncryptedResult = {
+  key: JsonWebKey;
+  iv: number[];
+  encryptedText: string;
+};
+
 export default function EncryptPage() {
-  const [result, setResult] = useState<any>(null);
+  
+
+  const [result, setResult] = useState<EncryptedResult | null>(null);
   const [decrypted, setDecrypted] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [loadingEncrypt, setLoadingEncrypt] = useState(false);
