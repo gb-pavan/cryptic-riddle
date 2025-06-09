@@ -102,15 +102,101 @@
 //   );
 // }
 
-export default function HomePage() {
+// const handleEncrypt = async () => {
+//   const res = await fetch('/api/encrypt', {
+//     headers: {
+//       'x-api-key': 'supersecureapikey123',
+//     },
+//   });
+
+//   if (!res.ok) {
+//     const error = await res.json();
+//     alert(error.error);
+//     return;
+//   }
+
+//   const json = await res.json();
+//   setData(json);
+// };
+
+
+// export default function HomePage() {
+//   return (
+//     <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 text-white p-4">
+//       <h1 className="text-4xl font-bold mb-4">🎉 Tailwind is working!</h1>
+//       <p className="text-lg">This is a styled component using Tailwind CSS.</p>
+//       <button className="mt-6 px-6 py-2 bg-white text-blue-600 font-semibold rounded-lg shadow hover:bg-gray-100 transition">
+//         Test Button
+//       </button>
+//     </main>
+//   );
+// }
+
+// 'use client';
+
+// import { useState } from 'react';
+// import { generateEncryptedMessage } from '../actions/encrypt';
+
+// export default function HomePage() {
+//   const [data, setData] = useState<{ key: string; encryptedMessage: string } | null>(null);
+
+//   const handleEncrypt = async () => {
+//     const res = await generateEncryptedMessage();
+//     setData(res);
+//   };
+
+//   return (
+//     <main className="p-8">
+//       <h1 className="text-2xl font-bold mb-4">🔐 Encrypt Message</h1>
+//       <button
+//         onClick={handleEncrypt}
+//         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+//       >
+//         Encrypt
+//       </button>
+
+//       {data && (
+//         <div className="mt-6">
+//           <p><strong>Key:</strong> {data.key}</p>
+//           <p><strong>Encrypted Message:</strong> {data.encryptedMessage}</p>
+//         </div>
+//       )}
+//     </main>
+//   );
+// }
+
+'use client';
+
+import { generateEncryptedMessage } from '@/actions/encrypt';
+import { useState } from 'react';
+
+export default function EncryptPage() {
+  const [result, setResult] = useState<any>(null);
+
+  const handleClick = async () => {
+    const res = await generateEncryptedMessage();
+    setResult(res);
+  };
+
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 text-white p-4">
-      <h1 className="text-4xl font-bold mb-4">🎉 Tailwind is working!</h1>
-      <p className="text-lg">This is a styled component using Tailwind CSS.</p>
-      <button className="mt-6 px-6 py-2 bg-white text-blue-600 font-semibold rounded-lg shadow hover:bg-gray-100 transition">
-        Test Button
+    <div className="p-6">
+      <button
+        onClick={handleClick}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        Encrypt Message
       </button>
-    </main>
+
+      {result && (
+        <div className="mt-4 p-4 bg-gray-100 rounded">
+          <p><strong>Encrypted Text:</strong> {result.encryptedText}</p>
+          <p><strong>Key:</strong> {JSON.stringify(result.key)}</p>
+          <p><strong>IV:</strong> {result.iv.join(', ')}</p>
+        </div>
+      )}
+    </div>
   );
 }
+
+
 
