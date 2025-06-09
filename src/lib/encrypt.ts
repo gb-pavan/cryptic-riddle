@@ -30,3 +30,32 @@ export async function encryptMessage(message: string) {
     encryptedText: Buffer.from(encrypted).toString('base64'),
   };
 }
+
+export async function decryptMessage({
+  encryptedText,
+  key,
+  iv,
+}: {
+  encryptedText: string;
+  key: JsonWebKey;
+  iv: number[];
+}) {
+  const importedKey = await crypto.subtle.importKey(
+    'jwk',
+    key,
+    { name: 'AES-GCM' },
+    false,
+    ['decrypt']
+  );
+
+  const decrypted = await crypto.subtle.decrypt(
+    {
+      name: 'AES-GCM',
+      iv: new Uint8Array(iv),
+    },
+    importedKey,
+    Buffer.from(encryptedText, 'base64')
+  );
+
+  return new TextDecoder().decode(decrypted);
+}
